@@ -51,9 +51,9 @@ class Ui_Cadastrar_Pessoa(object):
     def retranslateUi(self, Cadastrar_Pessoa):
         _translate = QtCore.QCoreApplication.translate
         Cadastrar_Pessoa.setWindowTitle(_translate("Cadastrar_Pessoa", "Dialog"))
-        self.NOME_CA.setText(_translate("Cadastrar_Pessoa", "Alice"))
-        self.NOME_CA_2.setText(_translate("Cadastrar_Pessoa", "Barros Melo"))
-        self.NOME_CA_3.setText(_translate("Cadastrar_Pessoa", "81844874524"))
+        self.NOME_CA.setText(_translate("Cadastrar_Pessoa", ""))
+        self.NOME_CA_2.setText(_translate("Cadastrar_Pessoa", ""))
+        self.NOME_CA_3.setText(_translate("Cadastrar_Pessoa", ""))
         self.pushButton.setText(_translate("Cadastrar_Pessoa", "CADASTRAR PESSOA"))
         self.label.setText(_translate("Cadastrar_Pessoa", "NOME:"))
         self.label_2.setText(_translate("Cadastrar_Pessoa", "SOBRENOME:"))

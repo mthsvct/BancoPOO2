@@ -1,5 +1,5 @@
-from historico import Historico
-from cliente import Cliente
+from Historico import Historico
+from Cliente import Cliente
 
 class Conta():
     
