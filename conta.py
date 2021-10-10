@@ -5,12 +5,12 @@ class Conta():
     
     _total_contas = 0
     
-    __slots__ = ['_numero', '_titular', '_saldo', '_limite']
+    __slots__ = ['_numero', '_titular', '_saldo', '_limite','_historico']
     
     def __init__(self, numero, cliente, limite):
         self._numero = numero
         self._titular = cliente
-        self._saldo = 0
+        self._saldo = 0.0
         self._limite = limite
         self._historico = Historico()
         Conta._total_contas += 1
@@ -53,7 +53,7 @@ class Conta():
     
     @historico.setter
     def historico(self, historico):
-        self._limite = historico
+        self._historico = historico
         
     # -------------------- # 
     
@@ -96,6 +96,7 @@ class Conta():
         
     def transfere(self, conta2, valor):
         resultado = self.saca(valor)
+        aux = False
         if resultado == False:
             aux = False
         else:
