@@ -196,11 +196,13 @@ class Main(QMainWindow, Ui_Main):
                 converte3 = str(Verifica._historico.data_abertura)
                 self.tela_extrato.lineEdit.setText(nomecompleto)
                 self.tela_extrato.lineEdit_2.setText(Verifica._numero)
-                self.tela_extrato.lineEdit_3.setText(converte1) 
-                self.tela_extrato.lineEdit_4.setText(converte2)
-                self.tela_extrato.lineEdit_5.setText(converte3)
+                self.tela_extrato.lineEdit_3.setText(f"{float(converte1):.2f} R$") 
+                self.tela_extrato.lineEdit_4.setText(f"{float(converte2):.2f} R$")
+                self.tela_extrato.lineEdit_5.setText(f"{converte3}")
         else:
-            QMessageBox.information(None,'POOII','Todos os valores devem ser preenchidos!')   
+            QMessageBox.information(None,'POOII','Todos os valores devem ser preenchidos!')
+
+        
     
     #
     def BSacar(self):
@@ -268,6 +270,11 @@ class Main(QMainWindow, Ui_Main):
         self.QtStack.setCurrentIndex(2)
 
     def abrir_tela_extrato(self):
+        self.tela_extrato.lineEdit.setText('')
+        self.tela_extrato.lineEdit_2.setText('')
+        self.tela_extrato.lineEdit_3.setText('')
+        self.tela_extrato.lineEdit_4.setText('')
+        self.tela_extrato.lineEdit_5.setText('')
         self.QtStack.setCurrentIndex(3)
 
     def abrir_tela_saque(self):
