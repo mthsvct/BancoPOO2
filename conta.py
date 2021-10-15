@@ -5,13 +5,14 @@ class Conta():
     
     _total_contas = 0
     
-    __slots__ = ['_numero', '_titular', '_saldo', '_limite','_historico']
+    __slots__ = ['_numero', '_titular', '_saldo', '_limite','_historico', '_senha']
     
-    def __init__(self, numero, cliente, limite):
+    def __init__(self, numero, cliente, limite, senha):
         self._numero = numero
         self._titular = cliente
         self._saldo = 0.0
         self._limite = limite
+        self._senha = senha
         self._historico = Historico()
         Conta._total_contas += 1
         
@@ -48,13 +49,24 @@ class Conta():
     # -------------------- #    
     
     @property
+    def senha(self):
+        return self._senha
+    
+    @senha.setter
+    def senha(self, senha):
+        self._senha = senha
+    
+    # -------------------- #   
+
+    @property
     def historico(self):
         return self._historico
     
     @historico.setter
     def historico(self, historico):
         self._historico = historico
-        
+
+
     # -------------------- # 
     
     @staticmethod

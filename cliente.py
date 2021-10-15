@@ -1,8 +1,11 @@
+from historico import Historico
+
 class Cliente():
-    def __init__(self, nome, sobrenome, cpf):
-        self._nome = nome
-        self._sobrenome = sobrenome
-        self._cpf = cpf
+    def __init__(self, pessoa):
+        self._nome = pessoa.nome
+        self._sobrenome = pessoa.sobrenome
+        self._cpf = pessoa.cpf
+        self._historico = Historico()
     
     @property
     def nome(self):
