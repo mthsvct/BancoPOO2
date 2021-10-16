@@ -1,14 +1,13 @@
 class Pessoa:
 	
-	__slots__ = ['_nome', '_sobrenome', '_cpf', '_email', '_telefone', '_endereco']
+	__slots__ = ['_nome', '_sobrenome', '_cpf', '_email', '_telefone']
 
-	def __init__(self, nome, sobrenome, cpf, email, telefone, endereco=None):
+	def __init__(self, nome, sobrenome, cpf, email, telefone):
 		self._nome = nome
 		self._sobrenome = sobrenome
 		self._cpf = cpf
 		self._email = email
 		self._telefone = telefone
-		self._endereco = endereco
 
 	@property
 	def nome(self):
@@ -29,11 +28,6 @@ class Pessoa:
 	@property
 	def telefone(self):
 		return self._telefone
-
-	@property
-	def telefone(self):
-		return self._endereco
-
 
 	# ----------------------- #
 

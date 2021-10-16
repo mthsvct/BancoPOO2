@@ -11,7 +11,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
-class Tela_cadastrar_conta(object):
+class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(640, 480)
@@ -84,7 +84,8 @@ class Tela_cadastrar_conta(object):
         self.label_5 = QtWidgets.QLabel(self.centralwidget)
         self.label_5.setGeometry(QtCore.QRect(230, 160, 281, 21))
         font = QtGui.QFont()
-        font.setPointSize(15)
+        font.setPointSize(12)
+        font.setUnderline(True)
         self.label_5.setFont(font)
         self.label_5.setText("")
         self.label_5.setObjectName("label_5")
@@ -139,14 +140,13 @@ class Tela_cadastrar_conta(object):
         self.checkBox.setText(_translate("MainWindow", "Li e aceito os termos."))
         self.label_6.setText(_translate("MainWindow", "Senha:"))
         self.label_7.setText(_translate("MainWindow", "Confirmaçao de Senha:"))
-        self.label_5.setText(_translate("MainWindow", ""))
 
 
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
-    ui = Tela_cadastrar_conta()
+    ui = Ui_MainWindow()
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())
