@@ -37,14 +37,14 @@ class Tela_saque(object):
         self.button_voltar.setFont(font)
         self.button_voltar.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.button_voltar.setObjectName("button_voltar")
-        self.button_buscar = QtWidgets.QPushButton(self.centralwidget)
+        '''self.button_buscar = QtWidgets.QPushButton(self.centralwidget)
         self.button_buscar.setGeometry(QtCore.QRect(490, 135, 101, 21))
         font = QtGui.QFont()
         font.setPointSize(12)
         self.button_buscar.setFont(font)
         self.button_buscar.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.button_buscar.setFocusPolicy(QtCore.Qt.ClickFocus)
-        self.button_buscar.setObjectName("button_buscar")
+        self.button_buscar.setObjectName("button_buscar")'''
         self.label_2 = QtWidgets.QLabel(self.centralwidget)
         self.label_2.setGeometry(QtCore.QRect(50, 170, 151, 16))
         font = QtGui.QFont()
@@ -54,7 +54,7 @@ class Tela_saque(object):
         self.lineEdit_2 = QtWidgets.QLineEdit(self.centralwidget)
         self.lineEdit_2.setGeometry(QtCore.QRect(200, 165, 281, 21))
         self.lineEdit_2.setObjectName("lineEdit_2")
-        self.lineEdit = QtWidgets.QLineEdit(self.centralwidget)
+        '''self.lineEdit = QtWidgets.QLineEdit(self.centralwidget)
         self.lineEdit.setGeometry(QtCore.QRect(200, 135, 281, 21))
         self.lineEdit.setObjectName("lineEdit")
         self.label = QtWidgets.QLabel(self.centralwidget)
@@ -62,7 +62,7 @@ class Tela_saque(object):
         font = QtGui.QFont()
         font.setPointSize(12)
         self.label.setFont(font)
-        self.label.setObjectName("label")
+        self.label.setObjectName("label")'''
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 640, 20))
@@ -81,9 +81,9 @@ class Tela_saque(object):
         self.titulo.setText(_translate("MainWindow", "SAQUE"))
         self.button_sacar.setText(_translate("MainWindow", "Sacar"))
         self.button_voltar.setText(_translate("MainWindow", "Voltar"))
-        self.button_buscar.setText(_translate("MainWindow", "Buscar"))
+        #self.button_buscar.setText(_translate("MainWindow", "Buscar"))
         self.label_2.setText(_translate("MainWindow", "VALOR:"))
-        self.label.setText(_translate("MainWindow", "CPF DA CONTA:"))
+        #self.label.setText(_translate("MainWindow", "CPF DA CONTA:"))
 
 
 if __name__ == "__main__":

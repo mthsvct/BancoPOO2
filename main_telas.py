@@ -81,7 +81,7 @@ class Main(QMainWindow, Ui_Main):
         self.setupUi(self)
 
         self.CAD = DadosCadastros()
-
+        self.usuario_logado = Conta()
 
         self.tela_login.pushButton.clicked.connect(self.fazer_login)
         self.tela_login.pushButton_2.clicked.connect(self.abrir_tela_cadastro_pessoa)
@@ -90,7 +90,7 @@ class Main(QMainWindow, Ui_Main):
         # Funções dos botões da tela:
         
         
-        self.tela_inicial.pushButton_2.clicked.connect(self.abrir_tela_extrato)
+        self.tela_inicial.pushButton_2.clicked.connect(self.BExtrato)
         self.tela_inicial.pushButton_3.clicked.connect(self.abrir_tela_saque)
         self.tela_inicial.pushButton_4.clicked.connect(self.abrir_tela_deposito)
         self.tela_inicial.pushButton_5.clicked.connect(self.abrir_tela_transferir)
@@ -98,16 +98,17 @@ class Main(QMainWindow, Ui_Main):
         # Funcionalidades dos botões:
         self.tela_cadastrar_pessoa.button_cadastrar.clicked.connect(self.BCadastrarPessoa)
         self.tela_cadastrar_conta.button_cadastrar.clicked.connect(self.BCadastrarConta)
-        self.tela_extrato.Buscar.clicked.connect(self.BExtrato)
+        #self.tela_extrato.Buscar.clicked.connect(self.BExtrato)
         self.tela_saque.button_sacar.clicked.connect(self.BSacar)
         self.tela_depositar.button_depositar.clicked.connect(self.BDepositar)
         self.tela_transferencia.button_transferir.clicked.connect(self.BTransferir)
         
-        self.tela_saque.button_buscar.clicked.connect(self.BBuscar1)
-        self.tela_depositar.button_buscar.clicked.connect(self.BBuscar2)
+        #self.tela_saque.button_buscar.clicked.connect(self.BBuscar1)
+        #self.tela_depositar.button_buscar.clicked.connect(self.BBuscar2)
         self.tela_cadastrar_conta.button_selecionar.clicked.connect(self.BBuscar3)
         
         # Botão de voltar:
+        self.tela_inicial.button_voltar.clicked.connect(self.sair)
         self.tela_cadastrar_pessoa.button_voltar.clicked.connect(self.abrir_tela_login)
         self.tela_cadastrar_conta.button_voltar.clicked.connect(self.abrir_tela_cadastro_pessoa)
         self.tela_transferencia.button_voltar.clicked.connect(self.voltar)
@@ -121,7 +122,8 @@ class Main(QMainWindow, Ui_Main):
         if numero != '' and senha != '':
             usuario = self.CAD.BuscarConta(numero)
             if(usuario != None):
-                # QMessageBox.information(None,'POOII','Todos os valores devem ser preenchidos!') 
+                self.usuario_logado = None
+                self.usuario_logado = usuario
                 if(senha == usuario.senha):
                     self.tela_inicial.label_bem_vindo.setText(f"Bem vindo, {usuario.titular.nome}!")
                     self.QtStack.setCurrentIndex(1)
@@ -169,7 +171,6 @@ class Main(QMainWindow, Ui_Main):
                 QMessageBox.information(None,'POOII','Cliente não cadastrado!')
         else:
             QMessageBox.information(None,'POOII','O valor deve ser preenchido!')        
-     
        
     #
     def BCadastrarPessoa(self):
@@ -178,15 +179,17 @@ class Main(QMainWindow, Ui_Main):
         cpf = self.tela_cadastrar_pessoa.lineEdit_3.text()
         email = self.tela_cadastrar_pessoa.lineEdit_4.text()
         telefone = self.tela_cadastrar_pessoa.lineEdit_5.text()
+        
+        self.tela_cadastrar_pessoa.lineEdit.setText("")
+        self.tela_cadastrar_pessoa.lineEdit_2.setText("")
+        self.tela_cadastrar_pessoa.lineEdit_3.setText("")
+        self.tela_cadastrar_pessoa.lineEdit_4.setText("")
+        self.tela_cadastrar_pessoa.lineEdit_5.setText("")
+
         if not (nome == '' or sobrenome == '' or cpf == '' or email == '' or telefone == ''):
             C = Cliente(Pessoa(nome, sobrenome, cpf, email, telefone))
             if(self.CAD.CadastrarCliente(C)):
                 QMessageBox.information(None,'POOII','Cadastro Realizado com Sucesso!')
-                '''self.tela_cadastrar_pessoa.lineEdit.setText('')
-                self.tela_cadastrar_pessoa.lineEdit_2.setText('')
-                self.tela_cadastrar_pessoa.lineEdit_3.setText('')
-                self.tela_cadastrar_pessoa.lineEdit_4.setText('')
-                self.tela_cadastrar_pessoa.lineEdit_5.setText('')'''
                 self.tela_cadastrar_conta.lineEdit.setText(C.cpf)
                 self.tela_cadastrar_conta.label_5.setText(f'{C.nome} {C.sobrenome}')
                 self.QtStack.setCurrentIndex(3)
@@ -228,57 +231,47 @@ class Main(QMainWindow, Ui_Main):
     
     #
     def BExtrato(self):
-        numero = self.tela_extrato.lineEdit_7.text()
-        if numero != '':
-            Verifica = self.CAD.BuscarConta(numero)
-            if Verifica == None:
-                QMessageBox.information(None,'POOII','Número de conta inexistente!')
-            else:
-                nomecompleto = Verifica._titular._nome + " " + Verifica._titular._sobrenome;
-                converte1 = str(Verifica._saldo)
-                converte2 = str(Verifica._limite)
-                converte3 = str(Verifica._historico.data_abertura)
-                self.tela_extrato.lineEdit.setText(nomecompleto)
-                self.tela_extrato.lineEdit_2.setText(Verifica._numero)
-                self.tela_extrato.lineEdit_3.setText(f"{float(converte1):.2f} R$") 
-                self.tela_extrato.lineEdit_4.setText(f"{float(converte2):.2f} R$")
-                self.tela_extrato.lineEdit_5.setText(f"{converte3}")
-        else:
-            QMessageBox.information(None,'POOII','Todos os valores devem ser preenchidos!')
+
+        self.QtStack.setCurrentIndex(4)
+        print(self.usuario_logado.titular.nome)
+
+        nome = self.usuario_logado.titular.nome
+        sobrenome = self.usuario_logado.titular.sobrenome
+        numero = self.usuario_logado.numero
+        saldo = self.usuario_logado.saldo
+        limite = self.usuario_logado.limite
+        data = self.usuario_logado.historico.data_abertura
+
+        self.tela_extrato.lineEdit.setText(f"{nome} {sobrenome}")
+        self.tela_extrato.lineEdit_2.setText(numero)
+        self.tela_extrato.lineEdit_3.setText(f"{float(saldo):.2f} R$") 
+        self.tela_extrato.lineEdit_4.setText(f"{float(limite):.2f} R$")
+        self.tela_extrato.lineEdit_5.setText(f"{data}")
+
 
     #
     def BSacar(self):
-        cpf = self.tela_saque.lineEdit.text()
+        self.QtStack.setCurrentIndex(5)
         valor = self.tela_saque.lineEdit_2.text()
         valor1 = float(valor)
-        if cpf != '':
-            C = self.CAD.BuscarPessoa(cpf)
-            if C != None:
-                if C.saca(valor1):
-                    QMessageBox.information(None,'POOII','Saque efetuado com sucesso!')
-                    self.tela_saque.lineEdit.setText('')
-                    self.tela_saque.lineEdit_2.setText('')
-                else:
-                    QMessageBox.information(None,'POOII','Saque efetuado sem sucesso!')
+        if self.usuario_logado.saca(valor1):
+            QMessageBox.information(None,'POOII','Saque efetuado com sucesso!')
+            self.tela_saque.lineEdit_2.setText('')
         else:
-            QMessageBox.information(None,'POOII','Todos os valores devem ser preenchidos!')  
+            QMessageBox.information(None,'POOII','Erro no saque.')
+        self.QtStack.setCurrentIndex(1)
+
     #
     def BDepositar(self):
-        cpf = self.tela_depositar.lineEdit.text()
         valor = self.tela_depositar.lineEdit_2.text()
         valor1 = float(valor)
-        if cpf != '':
-            C = self.CAD.BuscarPessoa(cpf)
-            if C != None:
-                if C.deposita(valor1):
-                    QMessageBox.information(None,'POOII','Depósito efetuado com sucesso!')
-                    self.tela_depositar.lineEdit.setText('')
-                    self.tela_depositar.lineEdit_2.setText('')
-                else:
-                    QMessageBox.information(None,'POOII','Depósito efetuado sem sucesso!')
+        if self.usuario_logado.deposita(valor1):
+            QMessageBox.information(None,'POOII','Depósito efetuado com sucesso!')
+            self.tela_depositar.lineEdit_2.setText('')
         else:
-            QMessageBox.information(None,'POOII','Todos os valores devem ser preenchidos!')    
-    
+            QMessageBox.information(None,'POOII','Depósito efetuado sem sucesso!')
+        self.QtStack.setCurrentIndex(1)
+
     #
     def BTransferir(self):
         cpf1 = self.tela_transferencia.lineEdit.text()
@@ -302,8 +295,16 @@ class Main(QMainWindow, Ui_Main):
             QMessageBox.information(None,'POOII','Todos os valores devem ser preenchidos!') 
     
     #
+    def sair(self):
+        self.usuario_logado = None
+        self.usuario_logado = Conta()
+        self.tela_login.lineEdit.setText("")
+        self.tela_login.lineEdit_2.setText("")
+        self.QtStack.setCurrentIndex(0)
 
     def abrir_tela_login(self):
+        self.tela_login.lineEdit.setText("")
+        self.tela_login.lineEdit_2.setText("")
         self.QtStack.setCurrentIndex(0)
 
     def voltar(self):
@@ -316,11 +317,6 @@ class Main(QMainWindow, Ui_Main):
         self.QtStack.setCurrentIndex(3)
 
     def abrir_tela_extrato(self):
-        self.tela_extrato.lineEdit.setText('')
-        self.tela_extrato.lineEdit_2.setText('')
-        self.tela_extrato.lineEdit_3.setText('')
-        self.tela_extrato.lineEdit_4.setText('')
-        self.tela_extrato.lineEdit_5.setText('')
         self.QtStack.setCurrentIndex(4)
 
     def abrir_tela_saque(self):
@@ -331,7 +327,6 @@ class Main(QMainWindow, Ui_Main):
 
     def abrir_tela_transferir(self):
         self.QtStack.setCurrentIndex(7)
-
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

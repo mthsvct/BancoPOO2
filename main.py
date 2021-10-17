@@ -2,7 +2,6 @@
 from pessoa import Pessoa
 from cliente import Cliente
 from conta import Conta
-from endereco import Endereco
 from funcionario import Funcionario
 from historico import Historico
 from login import Login

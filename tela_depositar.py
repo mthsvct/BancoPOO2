@@ -37,7 +37,8 @@ class Tela_depositar(object):
         self.button_voltar.setFont(font)
         self.button_voltar.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.button_voltar.setObjectName("button_voltar")
-        self.button_buscar = QtWidgets.QPushButton(self.centralwidget)
+        
+        '''self.button_buscar = QtWidgets.QPushButton(self.centralwidget)
         self.button_buscar.setGeometry(QtCore.QRect(480, 130, 101, 21))
         font = QtGui.QFont()
         font.setPointSize(12)
@@ -50,16 +51,19 @@ class Tela_depositar(object):
         font = QtGui.QFont()
         font.setPointSize(12)
         self.label.setFont(font)
-        self.label.setObjectName("label")
+        self.label.setObjectName("label")'''
+        
         self.label_2 = QtWidgets.QLabel(self.centralwidget)
         self.label_2.setGeometry(QtCore.QRect(40, 165, 151, 16))
         font = QtGui.QFont()
         font.setPointSize(12)
         self.label_2.setFont(font)
         self.label_2.setObjectName("label_2")
+        '''
         self.lineEdit = QtWidgets.QLineEdit(self.centralwidget)
         self.lineEdit.setGeometry(QtCore.QRect(190, 130, 281, 21))
         self.lineEdit.setObjectName("lineEdit")
+        '''
         self.lineEdit_2 = QtWidgets.QLineEdit(self.centralwidget)
         self.lineEdit_2.setGeometry(QtCore.QRect(190, 160, 281, 21))
         self.lineEdit_2.setObjectName("lineEdit_2")
@@ -81,8 +85,8 @@ class Tela_depositar(object):
         self.titulo.setText(_translate("MainWindow", "DEPOSITAR"))
         self.button_depositar.setText(_translate("MainWindow", "Depositar"))
         self.button_voltar.setText(_translate("MainWindow", "Voltar"))
-        self.button_buscar.setText(_translate("MainWindow", "Buscar"))
-        self.label.setText(_translate("MainWindow", "CPF DA CONTA:"))
+        #self.button_buscar.setText(_translate("MainWindow", "Buscar"))
+        #self.label.setText(_translate("MainWindow", "CPF DA CONTA:"))
         self.label_2.setText(_translate("MainWindow", "VALOR:"))
 
 
