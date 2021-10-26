@@ -89,7 +89,6 @@ class Main(QMainWindow, Ui_Main):
         # Configuação dos botões de cada tela:
         # Funções dos botões da tela:
         
-        
         self.tela_inicial.pushButton_2.clicked.connect(self.BExtrato)
         self.tela_inicial.pushButton_3.clicked.connect(self.abrir_tela_saque)
         self.tela_inicial.pushButton_4.clicked.connect(self.abrir_tela_deposito)
@@ -125,6 +124,7 @@ class Main(QMainWindow, Ui_Main):
                 self.usuario_logado = None
                 self.usuario_logado = usuario
                 if(senha == usuario.senha):
+                    # Foi digitado a senha correta!
                     self.tela_inicial.label_bem_vindo.setText(f"Bem vindo, {usuario.titular.nome}!")
                     self.QtStack.setCurrentIndex(1)
                 else:
