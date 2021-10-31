@@ -23,7 +23,7 @@ class Tela_transferencia(object):
         font.setPointSize(22)
         self.titulo.setFont(font)
         self.titulo.setObjectName("titulo")
-        self.lineEdit = QtWidgets.QLineEdit(self.centralwidget)
+        '''self.lineEdit = QtWidgets.QLineEdit(self.centralwidget)
         self.lineEdit.setGeometry(QtCore.QRect(220, 145, 311, 23))
         self.lineEdit.setObjectName("lineEdit")
         self.label = QtWidgets.QLabel(self.centralwidget)
@@ -31,7 +31,7 @@ class Tela_transferencia(object):
         font = QtGui.QFont()
         font.setPointSize(12)
         self.label.setFont(font)
-        self.label.setObjectName("label")
+        self.label.setObjectName("label")'''
         self.label_2 = QtWidgets.QLabel(self.centralwidget)
         self.label_2.setGeometry(QtCore.QRect(70, 175, 151, 16))
         font = QtGui.QFont()
@@ -81,7 +81,7 @@ class Tela_transferencia(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.titulo.setText(_translate("MainWindow", "TRANSFERENCIA"))
-        self.label.setText(_translate("MainWindow", "CPF DA CONTA1:"))
+        #self.label.setText(_translate("MainWindow", "CPF DA CONTA1:"))
         self.label_2.setText(_translate("MainWindow", "CPF DA CONTA2:"))
         self.label_3.setText(_translate("MainWindow", "VALOR:"))
         self.button_voltar.setText(_translate("MainWindow", "Voltar"))
@@ -92,7 +92,7 @@ if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_MainWindow()
+    ui = Tela_transferencia()
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())

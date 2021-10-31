@@ -81,8 +81,6 @@ class Conta():
     
     # -------------------- # 
     
-    
-    
     def deposita(self, valor):
         if valor < 1:
             aux = False
@@ -122,4 +120,32 @@ class Conta():
             self.historico.transacoes.append(f"Transferencia de {valor} para a conta {conta2.numero}")
             aux = True
         return aux
-            
+
+
+    # --------------------------------------------------------- #
+
+    def efetuarSAQUE(self, valor):
+        if valor == '':
+            mensagem = "Todos os valores devem ser preenchidos"
+        else:
+            valor1 = float(valor)
+            if self.saca(valor1):
+                mensagem = "Saque realizado com sucesso!"
+            else:
+                mensagem = "Não foi possivel realizar o saque!"
+        return mensagem
+
+    
+    def efetuarDEPOSITO(self, valor):
+        if valor == '':
+            mensagem = "Todos os valores devem ser preenchidos"
+        else:
+            valor1 = float(valor)
+            if self.deposita(valor1):
+                mensagem = "Saque realizado com sucesso!"
+            else:
+                mensagem = "Não foi possivel realizar o saque!"
+        return mensagem
+
+
+    

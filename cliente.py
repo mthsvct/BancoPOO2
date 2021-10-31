@@ -1,10 +1,14 @@
 from historico import Historico
 
 class Cliente():
-    def __init__(self, pessoa):
+
+    __slots__ = ['_nome', '_sobrenome', '_cpf', '_possuiCONTA', '_historico']
+
+    def __init__(self, pessoa, possuiCONTA=False):
         self._nome = pessoa.nome
         self._sobrenome = pessoa.sobrenome
         self._cpf = pessoa.cpf
+        self._possuiCONTA = possuiCONTA
         self._historico = Historico()
     
     @property
@@ -30,3 +34,11 @@ class Cliente():
     @cpf.setter
     def cpf(self, cpf):
         self._cpf = cpf
+
+    @property
+    def possuiCONTA(self):
+        return self._possuiCONTA
+
+    @possuiCONTA.setter
+    def possuiCONTA(self, possuiCONTA):
+        self._possuiCONTA = possuiCONTA
