@@ -1,14 +1,17 @@
+import mysql.connector as mysql
 from pessoa import Pessoa
 from cliente import Cliente
 from conta import Conta
+from conexaoBD import ConexaoBD
 
 class Registros:
-	__slots__ = ['_clientes','_contas']
+	__slots__ = ['_clientes','_contas', '_bd']
 	
 	def __init__(self):
 		self._clientes = []
 		self._contas = []
-	
+		self._bd = ConexaoBD()
+
 	@property
 	def clientes(self):
 		return self._clientes
@@ -17,22 +20,45 @@ class Registros:
 	def contas(self):
 		return self._contas
 
+	@property
+	def bd(self):
+		return self._bd
+
 	# -----------------------BUSCAS-------------------------- #
+
+	# Função que inicializa a classe cliente;
+	def montaCLIENTE(self, aux):
+		encontrado = None
+		if( len(aux) > 0 ):
+			# nome, sobrenome, cpf, email, telefone
+			print(aux)
+			encontrado = Cliente(Pessoa(aux[0][1], aux[0][2], aux[0][0], aux[0][3], aux[0][4]), aux[0][5])
+			print(f"encontrado = {encontrado}")
+		return encontrado
 
 	# Função que busca um cliente pelo o cpf
 	def buscaCLIENTE(self, cpf):
+		sql = (f"SELECT * FROM cliente WHERE cpf = {cpf}")
+		aux = self.bd.executaSELECT(sql)
+		encontrado = self.montaCLIENTE(aux)
+		return encontrado
+
+	# Função que inicializa a classe conta;
+	def montaCONTA(self, aux):
 		encontrado = None
-		for i in self.clientes:
-			if i.cpf == cpf:
-				encontrado = i
+		if( len(aux) > 0 ):
+			# nome, sobrenome, cpf, email, telefone
+			print(f"montaCONTA aux[0][1] = {aux[0][1]}")
+			cliente = buscaCLIENTE(aux[0][1])
+			encontrado = Conta(aux[0][0], cliente, aux[0][2], aux[0][3], aux[0][4])
+			print(f"encontrado em conta = {encontrado}")
 		return encontrado
 
 	# Verifica se já possui uma conta com o número buscado
 	def buscaCONTA(self, num):
-		encontrado = None
-		for i in self.contas:
-			if num == i.numero:
-				encontrado = i
+		sql = (f"SELECT * FROM conta WHERE numero = {num}")
+		aux = self.bd.executaSELECT(sql)
+		encontrado = self.montaCONTA(aux)
 		return encontrado
 
 	# Busca um conta pelo o CPF:
@@ -54,7 +80,9 @@ class Registros:
 
 		if num != '' and senha != '':
 			# todos os campos foram preenchidos
+			
 			conta = self.buscaCONTA(num) # busca o usuário na lista de funcionarios cadastrados.
+			print(f"conta login = {conta}")
 
 			if(conta != None):
                 # Funcionário existe!
@@ -92,6 +120,8 @@ class Registros:
 				mensagem = "O cpf informado já foi cadastrado!"
 			else:
 				p = Pessoa(nome, sobrenome, cpf, email, tel)
+				sql = (f"INSERT INTO cliente VALUES ({cpf}, {nome}, {sobrenome}, {email}, {tel}, 'nao')")
+				self.bd.executaALTERACOES(sql)
 				c = Cliente(p)
 				self.clientes.append(c)
 				mensagem = "Cadastro do cliente realizado com sucesso!"
@@ -108,12 +138,13 @@ class Registros:
 
 	# Cadastra uma nova conta;
 	def cadastrarCONTA(self, numero, cpf, limite, senha, confirmSENHA):
+		print("cadastrarCONTA")
 		if '' in [numero, cpf, limite, senha, confirmSENHA]:
 			# Algum dos valores não foi preenchido.
 			mensagem = "Todos os valores devem ser preenchidos!"
 		else:
 			c = self.buscaCLIENTE(cpf)
-			if c.possuiCONTA != False:
+			if c.possuiCONTA != 'nao':
 				# O cliente selecionado já possui uma conta.
 				mensagem = "Este CPF já possui uma conta"
 			else:
@@ -126,8 +157,12 @@ class Registros:
 						mensagem = "Limite com valor não aceito."
 					else:
 						# Sem problemas, pode cadastrar normalmente.
-						self.contas.append(Conta(numero, c, limite, senha))
-						c.possuiCONTA = True
+						print('chegou aqui no cadastro de conta')
+						conta_nova = Conta(numero, c, limite, senha)
+						#self.contas.append(conta_nova)
+						sql = (f"INSERT INTO conta VALUES ({numero}, {c.cpf}, {conta_nova.saldo}, {limite}, {senha}, {conta_nova.id_historico})")
+						self.bd.executaALTERACOES(sql)
+						c.possuiCONTA = 'sim'
 						mensagem = "Cadastro realizado com sucesso!"
 		return mensagem
 

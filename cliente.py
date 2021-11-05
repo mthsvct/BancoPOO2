@@ -4,7 +4,7 @@ class Cliente():
 
     __slots__ = ['_nome', '_sobrenome', '_cpf', '_possuiCONTA', '_historico']
 
-    def __init__(self, pessoa, possuiCONTA=False):
+    def __init__(self, pessoa, possuiCONTA='nao'):
         self._nome = pessoa.nome
         self._sobrenome = pessoa.sobrenome
         self._cpf = pessoa.cpf
