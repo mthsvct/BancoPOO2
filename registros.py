@@ -56,8 +56,8 @@ class Registros:
 			for i in aux[0]:
 				print(f'aux[0][{j}] = {i}')
 				j += 1
-
 			print('-' * 50)
+			
 			encontrado = Conta(aux[0][0], cliente, aux[0][2], aux[0][3], aux[0][4])
 			print(f"encontrado em conta = {encontrado}")
 		return encontrado

@@ -76,6 +76,7 @@ class Ui_Main(QtWidgets.QWidget):
         self.QtStack.addWidget(self.stack6)
 
 class Main(QMainWindow, Ui_Main):
+    
     def __init__(self, parent=None):
         super(Main, self).__init__(parent)
         self.setupUi(self)
@@ -148,7 +149,7 @@ class Main(QMainWindow, Ui_Main):
     def botaoENTRAR(self):
         numero = self.tela_login.lineEdit.text()
         senha = self.tela_login.lineEdit_2.text()
-        usuario = self.CAD.fazerLOGIN(numero, numero)
+        usuario = self.CAD.fazerLOGIN(numero, senha)
         if usuario[0] != None:
             self.logado = usuario[0]
             self.tela_inicial.label_bem_vindo.setText(f"Bem vindo, {usuario[0].titular.nome}!")
@@ -207,7 +208,7 @@ class Main(QMainWindow, Ui_Main):
         self.tela_extrato.lineEdit_2.setText("")
         self.tela_extrato.lineEdit_3.setText("") 
         self.tela_extrato.lineEdit_4.setText("")
-        self.tela_extrato.lineEdit_5.setText("")
+        #self.tela_extrato.lineEdit_5.setText("")
 
         self.QtStack.setCurrentIndex(4) # Abre a tela de extrato
 
@@ -218,13 +219,13 @@ class Main(QMainWindow, Ui_Main):
         numero = self.logado.numero
         saldo = self.logado.saldo
         limite = self.logado.limite
-        data = self.logado.historico.data_abertura
+        # data = self.logado.historico.data_abertura
 
         self.tela_extrato.lineEdit.setText(f"{nome} {sobrenome}")
         self.tela_extrato.lineEdit_2.setText(numero)
         self.tela_extrato.lineEdit_3.setText(f"{float(saldo):.2f} R$") 
         self.tela_extrato.lineEdit_4.setText(f"{float(limite):.2f} R$")
-        self.tela_extrato.lineEdit_5.setText(f"{data}")
+        #self.tela_extrato.lineEdit_5.setText(f"{data}")
 
     # Função que é acionada quando o usuário clica no botão de saque na tela de saque.
     def botaoSACAR(self):
