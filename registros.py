@@ -49,7 +49,15 @@ class Registros:
 		if( len(aux) > 0 ):
 			# nome, sobrenome, cpf, email, telefone
 			print(f"montaCONTA aux[0][1] = {aux[0][1]}")
-			cliente = buscaCLIENTE(aux[0][1])
+			cliente = self.buscaCLIENTE(aux[0][1])
+
+			print('-' * 50)
+			j = 0
+			for i in aux[0]:
+				print(f'aux[0][{j}] = {i}')
+				j += 1
+
+			print('-' * 50)
 			encontrado = Conta(aux[0][0], cliente, aux[0][2], aux[0][3], aux[0][4])
 			print(f"encontrado em conta = {encontrado}")
 		return encontrado
@@ -86,6 +94,7 @@ class Registros:
 
 			if(conta != None):
                 # Funcionário existe!
+				print(f"Senha = {senha} and conta.senha = {conta.senha}")
 				if(senha == conta.senha):
 					mensagem = ("Bem vindo, "+conta.titular.nome+"!")
 					logado.append(conta)
@@ -120,7 +129,7 @@ class Registros:
 				mensagem = "O cpf informado já foi cadastrado!"
 			else:
 				p = Pessoa(nome, sobrenome, cpf, email, tel)
-				sql = (f"INSERT INTO cliente VALUES ({cpf}, {nome}, {sobrenome}, {email}, {tel}, 'nao')")
+				sql = (f"INSERT INTO cliente VALUES ('{cpf}', '{nome}', '{sobrenome}', '{email}', '{tel}', 'nao')")
 				self.bd.executaALTERACOES(sql)
 				c = Cliente(p)
 				self.clientes.append(c)
@@ -160,7 +169,7 @@ class Registros:
 						print('chegou aqui no cadastro de conta')
 						conta_nova = Conta(numero, c, limite, senha)
 						#self.contas.append(conta_nova)
-						sql = (f"INSERT INTO conta VALUES ({numero}, {c.cpf}, {conta_nova.saldo}, {limite}, {senha}, {conta_nova.id_historico})")
+						sql = (f"INSERT INTO conta VALUES ({numero}, {c.cpf}, {conta_nova.saldo}, {limite}, {senha})")
 						self.bd.executaALTERACOES(sql)
 						c.possuiCONTA = 'sim'
 						mensagem = "Cadastro realizado com sucesso!"
