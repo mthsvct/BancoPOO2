@@ -284,6 +284,15 @@ class Registros:
 				mensagem = "Transferência realizada sem sucesso!"
 		return mensagem
 
+
+	def pegaHISTORICO(self, esse):
+		if esse == None:
+			mensagem = None
+		else:
+			sql = ("SELECT * FROM historico WHERE conta_num = '%s'" %(esse.numero))
+			mensagem = self.bd.executaSELECT(sql)
+		return mensagem
+
 # self,nome,sobrenome,cpf,email,tel
 # numero,cpf,limite,senha,confirmSENHA
 

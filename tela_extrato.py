@@ -76,12 +76,21 @@ class Tela_extrato(object):
         self.lineEdit_5.setObjectName("lineEdit_5")'''
         
         self.button_voltar = QtWidgets.QPushButton(self.centralwidget)
-        self.button_voltar.setGeometry(QtCore.QRect(270, 340, 101, 31))
+        self.button_voltar.setGeometry(QtCore.QRect(340, 340, 101, 31))
         font = QtGui.QFont()
         font.setPointSize(12)
         self.button_voltar.setFont(font)
         self.button_voltar.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.button_voltar.setObjectName("button_voltar")
+
+        self.button_historico = QtWidgets.QPushButton(self.centralwidget)
+        self.button_historico.setGeometry(QtCore.QRect(230, 340, 101, 31))
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.button_historico.setFont(font)
+        self.button_historico.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.button_historico.setObjectName("button_voltar")
+
         '''self.lineEdit_7 = QtWidgets.QLineEdit(self.centralwidget)
         self.lineEdit_7.setGeometry(QtCore.QRect(250, 180, 311, 23))
         self.lineEdit_7.setObjectName("lineEdit_7")'''
@@ -120,6 +129,7 @@ class Tela_extrato(object):
         self.label_5.setText(_translate("MainWindow", "LIMITE:"))
         #self.label_6.setText(_translate("MainWindow", "DATA DE CRIAÇAO: "))
         self.button_voltar.setText(_translate("MainWindow", "Voltar"))
+        self.button_historico.setText(_translate("MainWindow", "Historico"))
         #self.label_7.setText(_translate("MainWindow", "Nº da CONTA:"))
         #self.Buscar.setText(_translate("MainWindow", "Buscar"))
 

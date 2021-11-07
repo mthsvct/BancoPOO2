@@ -2,6 +2,7 @@
 
 import sys
 import os
+import datetime
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QMessageBox, QMainWindow, QApplication, QFileDialog
@@ -20,6 +21,7 @@ from tela_inicial import Tela_inicial
 from tela_saque import Tela_saque
 from tela_transferencia import Tela_transferencia
 from tela_login import Tela_login
+from tela_apresentar_historico import Tela_apresentar_historico
 
 
 class Ui_Main(QtWidgets.QWidget):
@@ -39,6 +41,7 @@ class Ui_Main(QtWidgets.QWidget):
         self.stack5 = QtWidgets.QMainWindow()
         self.stack6 = QtWidgets.QMainWindow()
         self.stack7 = QtWidgets.QMainWindow()
+        self.stack8 = QtWidgets.QMainWindow()
 
         # Criação do objeto para cada tela
         self.tela_inicial = Tela_inicial()
@@ -65,6 +68,9 @@ class Ui_Main(QtWidgets.QWidget):
         self.tela_login = Tela_login()
         self.tela_login.setupUi(self.stack7)
 
+        self.tela_apresentar_historico = Tela_apresentar_historico()
+        self.tela_apresentar_historico.setupUi(self.stack8)
+
         #
         self.QtStack.addWidget(self.stack7) 
         self.QtStack.addWidget(self.stack0)
@@ -74,6 +80,7 @@ class Ui_Main(QtWidgets.QWidget):
         self.QtStack.addWidget(self.stack4)
         self.QtStack.addWidget(self.stack5)
         self.QtStack.addWidget(self.stack6)
+        self.QtStack.addWidget(self.stack8)
 
 class Main(QMainWindow, Ui_Main):
     
@@ -95,11 +102,13 @@ class Main(QMainWindow, Ui_Main):
         self.tela_inicial.pushButton_5.clicked.connect(self.abrir_tela_transferir)
 
         # Funcionalidades dos botões:
+        self.tela_extrato.button_historico.clicked.connect(self.botaoHISTORICO)
         self.tela_cadastrar_pessoa.button_cadastrar.clicked.connect(self.botaoCADASTRAR_pessoa)
         self.tela_cadastrar_conta.button_cadastrar.clicked.connect(self.botaoCADASTRAR_conta)
         self.tela_saque.button_sacar.clicked.connect(self.botaoSACAR)
         self.tela_depositar.button_depositar.clicked.connect(self.botaoDEPOSITAR)
         self.tela_transferencia.button_transferir.clicked.connect(self.botaoTRANSFERIR)
+
         
         # Botão de voltar:
         self.tela_inicial.button_voltar.clicked.connect(self.sair)
@@ -109,6 +118,7 @@ class Main(QMainWindow, Ui_Main):
         self.tela_saque.button_voltar.clicked.connect(self.voltar)
         self.tela_depositar.button_voltar.clicked.connect(self.voltar)
         self.tela_extrato.button_voltar.clicked.connect(self.voltar)
+        self.tela_apresentar_historico.voltar.clicked.connect(self.botaoEXTRATO)
     
     #
     def sair(self):
@@ -143,6 +153,9 @@ class Main(QMainWindow, Ui_Main):
 
     def abrir_tela_transferir(self):
         self.QtStack.setCurrentIndex(7)
+
+    def abrir_tela_apresentar_historico(self):
+        self.QtStack.setCurrentIndex(8)
 
 
     # Função que é acionada quando o usuário clica no botão de entrar na tela de login:
@@ -228,6 +241,20 @@ class Main(QMainWindow, Ui_Main):
         self.tela_extrato.lineEdit_4.setText(f"{float(limite):.2f} R$")
         #self.tela_extrato.lineEdit_5.setText(f"{data}")
 
+    # Função que é acionada quando o usuário clica no botão de histórico na tela de extrato.
+    def botaoHISTORICO(self):
+        self.QtStack.setCurrentIndex(8)
+        Esse = self.CAD.buscaCONTA(self.logado.titular.cpf)
+        if Esse == None:
+            QMessageBox.information(None,'POOII',f'Deu erro!')
+        else:
+            mensagem = self.CAD.pegaHISTORICO(Esse)
+            print(f"mensagem = {mensagem}")
+            h = ''
+            for i in range(0, len(mensagem)):
+                h = h + (f"{mensagem[i][1]} - {mensagem[i][2]} \n\n")
+            self.tela_apresentar_historico.textBrowser.setText(h) 
+
     # Função que é acionada quando o usuário clica no botão de saque na tela de saque.
     def botaoSACAR(self):
         valor = self.tela_saque.lineEdit_2.text()
@@ -241,7 +268,6 @@ class Main(QMainWindow, Ui_Main):
         valor = self.tela_depositar.lineEdit_2.text()
         mensagem = self.CAD.EfetuarDEPOSITAR(self.logado.titular.cpf,valor)
         QMessageBox.information(None,'POOII',f'{mensagem}')
-        
         self.tela_depositar.lineEdit_2.setText('')
 
     # Função que é acionada quando o usuário clica no botão transferir na tela de transferência.
