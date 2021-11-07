@@ -192,7 +192,7 @@ class Main(QMainWindow, Ui_Main):
         senha = self.tela_cadastrar_conta.lineEdit_4.text()
         confirmSENHA = self.tela_cadastrar_conta.lineEdit_5.text()
 
-        mensagem = self.CAD.cadastrarCONTA(numero, cpf, limite, senha, confirmSENHA)
+        mensagem = self.CAD.cadastrarCONTA(numero,cpf,limite,senha,confirmSENHA)
         self.QtStack.setCurrentIndex(0)
 
         self.tela_cadastrar_conta.lineEdit.setText('')
@@ -213,12 +213,13 @@ class Main(QMainWindow, Ui_Main):
         self.QtStack.setCurrentIndex(4) # Abre a tela de extrato
 
         # print(self.logado.titular.nome)
+        Esse = self.CAD.buscaCONTA(self.logado.titular.cpf)
 
-        nome = self.logado.titular.nome
-        sobrenome = self.logado.titular.sobrenome
-        numero = self.logado.numero
-        saldo = self.logado.saldo
-        limite = self.logado.limite
+        nome = Esse.titular.nome
+        sobrenome = Esse.titular.sobrenome
+        numero = Esse.numero
+        saldo = Esse.saldo
+        limite = Esse.limite
         # data = self.logado.historico.data_abertura
 
         self.tela_extrato.lineEdit.setText(f"{nome} {sobrenome}")
@@ -230,7 +231,7 @@ class Main(QMainWindow, Ui_Main):
     # Função que é acionada quando o usuário clica no botão de saque na tela de saque.
     def botaoSACAR(self):
         valor = self.tela_saque.lineEdit_2.text()
-        mensagem = self.logado.efetuarSAQUE(valor)
+        mensagem = self.CAD.EfetuarSAQUE(self.logado.titular.cpf,valor)
         QMessageBox.information(None,'POOII',f'{mensagem}')
         self.tela_saque.lineEdit_2.setText('')
 
@@ -238,19 +239,19 @@ class Main(QMainWindow, Ui_Main):
     # Função que é acionada quando o usuário clica no botão de deposito na tela de depósito.
     def botaoDEPOSITAR(self):
         valor = self.tela_depositar.lineEdit_2.text()
-        mensagem = self.logado.efetuarDEPOSITO(valor)
+        mensagem = self.CAD.EfetuarDEPOSITAR(self.logado.titular.cpf,valor)
         QMessageBox.information(None,'POOII',f'{mensagem}')
+        
         self.tela_depositar.lineEdit_2.setText('')
 
     # Função que é acionada quando o usuário clica no botão transferir na tela de transferência.
     def botaoTRANSFERIR(self):
         cpf2 = self.tela_transferencia.lineEdit_2.text()
         valor = self.tela_transferencia.lineEdit_3.text()
-        mensagem = self.CAD.efetuarTRANSFERENCIA(self.logado, cpf2, valor)
+        mensagem = self.CAD.EfetuarTRANSFERENCIA(self.logado.titular.cpf,cpf2,valor)
         QMessageBox.information(None,'POOII',f'{mensagem}')
         self.tela_transferencia.lineEdit_2.setText('')
-        self.tela_transferencia.lineEdit_3.setText('')
-    
+        self.tela_transferencia.lineEdit_3.setText('')   
     
 if __name__ == '__main__':
     app = QApplication(sys.argv)

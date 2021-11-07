@@ -7,7 +7,7 @@ class Conta():
     
     __slots__ = ['_numero', '_titular', '_saldo', '_limite', '_id_historico', '_historico', '_senha']
     
-    def __init__(self, numero=None, cliente=None, saldo=0, limite=None, senha=None):
+    def __init__(self, numero=None, cliente=None, saldo=None,limite=None, senha=None):
         self._numero = numero
         self._titular = cliente
         self._saldo = saldo
