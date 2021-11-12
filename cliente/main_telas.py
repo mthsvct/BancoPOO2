@@ -126,10 +126,13 @@ class Main(QMainWindow, Ui_Main):
 
     #
     def sair(self):
+        dados = (f'{0};Sair')
+        self.enviar_dados(dados)
         self.logado = []
         self.tela_login.lineEdit.setText("")
         self.tela_login.lineEdit_2.setText("")
         self.QtStack.setCurrentIndex(0)
+
 
     def abrir_tela_login(self):
         self.tela_login.lineEdit.setText("")
@@ -181,7 +184,7 @@ class Main(QMainWindow, Ui_Main):
         :return:
         '''
         self.conexao.send(dados.encode())
-        print("Enviado!")
+        #print("Enviado!")
         #except:
         #print('Erro')
 
@@ -192,10 +195,10 @@ class Main(QMainWindow, Ui_Main):
         '''
 
         dados_recebidos = self.conexao.recv(1024).decode()
-        print(f"dados_recebidos = {dados_recebidos}")
+        #print(f"dados_recebidos = {dados_recebidos}")
         dados = dados_recebidos.split(';')
-        print(type(dados))
-        print("Recebido!")
+        #print(type(dados))
+        #print("Recebido!")
         return dados
         
         #except:
@@ -207,13 +210,13 @@ class Main(QMainWindow, Ui_Main):
         senha = self.tela_login.lineEdit_2.text()
         dados = (f"{1};{numero};{senha}")
         
-        print(f"dados = {dados}")
+        #print(f"dados = {dados}")
         self.enviar_dados(dados)
 
         resposta = self.receber_dados()
-        print("CHEGOU AQUI *")
+        #print("CHEGOU AQUI *")
 
-        print(f"resposta = {resposta}")
+        #print(f"resposta = {resposta}")
 
         if resposta[0] != '0':
             self.logado = resposta
@@ -325,17 +328,6 @@ class Main(QMainWindow, Ui_Main):
         else:
             QMessageBox.information(None,'POOII',f'{resposta[1]}')
 
-            '''
-        Esse = self.CAD.buscaCONTA(self.logado.titular.cpf)
-        if Esse == None:
-            QMessageBox.information(None,'POOII',f'Deu erro!')
-        else:
-            mensagem = self.CAD.pegaHISTORICO(Esse)
-            print(f"mensagem = {mensagem}")
-            h = ''
-            for i in range(0, len(mensagem)):
-                h = h + (f"{mensagem[i][1]} - {mensagem[i][2]} \n\n")
-            self.tela_apresentar_historico.textBrowser.setText(h) '''
 
     # Função que é acionada quando o usuário clica no botão de saque na tela de saque.
     def botaoSACAR(self):
@@ -361,8 +353,13 @@ class Main(QMainWindow, Ui_Main):
     def botaoTRANSFERIR(self):
         cpf2 = self.tela_transferencia.lineEdit_2.text()
         valor = self.tela_transferencia.lineEdit_3.text()
-        mensagem = self.CAD.EfetuarTRANSFERENCIA(self.logado.titular.cpf,cpf2,valor)
-        QMessageBox.information(None,'POOII',f'{mensagem}')
+        dados = (f'{8};{self.logado[2]};{cpf2};{valor}')
+        
+        self.enviar_dados(dados)
+        resposta = self.receber_dados()
+
+        QMessageBox.information(None,'POOII',f'{resposta[1]}')
+        
         self.tela_transferencia.lineEdit_2.setText('')
         self.tela_transferencia.lineEdit_3.setText('')   
     

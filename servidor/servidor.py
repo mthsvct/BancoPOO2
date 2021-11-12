@@ -45,7 +45,7 @@ class Servidor():
         '''
         dados_recebidos = self.conexao.recv(1024).decode()
         dados = list(dados_recebidos.split(';'))
-        print(f'Recebido: {dados} : {type(dados)}')
+        #print(f'Recebido: {dados} : {type(dados)}')
         return dados
     
 
@@ -53,9 +53,9 @@ class Servidor():
         '''
             Metodo para enviar uma string ao cliente
         '''
-        print(f"dados = {dados}")
+        #print(f"dados = {dados}")
         self.conexao.send(str(dados).encode())
-        print("Enviado!")
+        #print("Enviado!")
         
 
     def menu(self):
@@ -63,32 +63,32 @@ class Servidor():
 
 
         '''
-            Metodo que recebe dados de um cliente e chama um metodo de acordo com o primeiro item:
-            1 - login
-            2 - Cadastrar cliente
-            3 - Cadastrar conta
-            4 - Extrato
-            5 - Histórico
-            6 - Saque
-            7 - Depósito
-
-
+            Indice do Menu:
+            [OK] - 1 - login
+            [OK] - 2 - Cadastrar cliente
+            [OK] - 3 - Cadastrar conta
+            [OK] - 4 - Extrato
+            [OK] - 5 - Histórico
+            [OK] - 6 - Saque
+            [OK] - 7 - Depósito
+            [OK] - 8 - Transferência <- Fazer depois.
+            [OK] - 0 - Fazer o sevridor parar <- fazer depois.
         '''
-        print("chegou aqui!")
+
+        # print("chegou aqui!")
         
         i = 0
         while True:
+            
             d = self.recebe_dados()
-            #print(f'd = {d}')
+
             if d[0]=='1':
-                #print('MENU -> Login')
                 self.login(d)
 
             elif d[0]=='2':
                 self.cadastrar_cliente(d)
 
             elif d[0]=='3':
-                #print("---->cadastrar_conta")
                 self.cadastrar_conta(d)
 
             elif d[0]=='4':
@@ -100,8 +100,11 @@ class Servidor():
             elif d[0]=='6':
                 self.saque(d[1], d[2])
 
-            elif d[0]=='7':
+            elif d[0] == '7':
                 self.deposito(d[1], d[2])
+
+            elif d[0] == '8':
+                self.transferencia(d[1], d[2], d[3]) # cpf1, cpf2, valor.
 
             else:
                 print('cliente encerrado')
@@ -110,27 +113,8 @@ class Servidor():
                 con, client = self.serv.accept()
                 print(f'Conectado a {client}')
                 self.conexao = con
-                    #break
+                #break
 
-
-                '''
-
-                elif d[0]=='4':
-                    #self.saque(d)
-                elif d[0]=='5':
-                    #self.extrato()
-                elif d[0]=='6':
-                    #self.transferencia(d)
-
-            except:
-                print('cliente encerrado')
-                self.conexao = None
-                print('aguardando conexao...')
-                con, client = self.serv.accept()
-                print(f'Conectado a {client}')
-                self.conexao = con
-
-                #break'''
 
     # Funções seguintes
 
@@ -141,7 +125,7 @@ class Servidor():
             resultado = (f'{0};{retorno[1]}')
         else:
             resultado = (f'{1};{retorno[0].numero};{retorno[0].titular.cpf};{retorno[0].titular.nome};{retorno[0].titular.sobrenome}')
-        print(f'Mensagem = {retorno[0]}')
+        #print(f'Mensagem = {retorno[0]}')
         self.enviar_dados(resultado)
 
 
@@ -190,7 +174,7 @@ class Servidor():
 
     def saque(self, cpf, valor):
         if '' in [cpf, valor]:
-            resultado = (f'{0};Não foi possível realizar o saqu!')
+            resultado = (f'{0};Não foi possível realizar o saque!')
         else:
             s = self.registros.EfetuarSAQUE(cpf, valor)
             resultado = (f'{1};{s}')
@@ -199,8 +183,17 @@ class Servidor():
 
     def deposito(self, cpf, valor):
         if '' in [cpf, valor]:
-            resultado = (f'{0};Não foi possível realizar o saqu!')
+            resultado = (f'{0};Não foi possível realizar o deposito!')
         else:
             d = self.registros.EfetuarDEPOSITAR(cpf, valor)
             resultado = (f'{1};{d}')
+        self.enviar_dados(resultado)
+
+
+    def transferencia(self, cpf1, cpf2, valor):
+        if '' in [cpf1, cpf2, valor]:
+            resultado = (f'{0};Nao foi possivel realizar a transferencia!')
+        else:
+            t = self.registros.EfetuarTRANSFERENCIA(cpf1, cpf2, valor)
+            resultado = (f'{1};{t}')
         self.enviar_dados(resultado)

@@ -39,7 +39,7 @@ class Registros:
 
 	# Função que busca um cliente pelo o CPF.
 	def buscaCLIENTE(self,cpf):
-		print("buscaCLIENTE(...)")
+		#print("buscaCLIENTE(...)")
 		sql = ("SELECT * FROM cliente WHERE cpf = '%s'" %(cpf))
 		aux = self.bd.executaSELECT(sql)
 		encontrado = self.montaCLIENTE(aux)
@@ -85,7 +85,7 @@ class Registros:
 			# todos os campos foram preenchidos
 			
 			conta = self.buscaCONTA_num(num) # busca o usuário na lista de funcionarios cadastrados.
-			print(f"conta login = {conta}")
+			#print(f"conta login = {conta}")
 
 			sql = ("SELECT * FROM conta WHERE numero = '%s' AND senha = MD5('%s')" %(num,senha))
 			Aqui = self.bd.executaSELECT(sql)
@@ -141,14 +141,14 @@ class Registros:
 		# print("cadastrarCONTA")
 		retorno = []
 		erros = 1
-		print('cadastrarCONTA(...)')
-		print(f"Valores = {[numero, cpf, limite, senha, confirmSENHA]}")
+		#print('cadastrarCONTA(...)')
+		#print(f"Valores = {[numero, cpf, limite, senha, confirmSENHA]}")
 		if '' in [numero, cpf, limite, senha, confirmSENHA]:
 			# Algum dos valores não foi preenchido.
 			mensagem = "Todos os valores devem ser preenchidos!"
 		else:
 			c = self.buscaCLIENTE(cpf)
-			print("Chegou aqui *")
+			#print("Chegou aqui *")
 			limite2 = float(limite)
 			if c.possuiCONTA == 'Sim':
 				# O cliente selecionado já possui uma conta.
@@ -166,7 +166,7 @@ class Registros:
 						# Sem problemas, pode cadastrar normalmente.
 						# print('Chegou aqui no cadastro de conta.')
 						conta_nova = Conta(numero,c,0,limite2,senha)
-						print("Chegou aqui *")
+						#print("Chegou aqui *")
 						#self.contas.append(conta_nova)
 						sql = ("INSERT INTO conta(numero,cpf_cliente,saldo,limite,senha) VALUES ('%s','%s','%f','%f',MD5('%s'))" %(numero,c.cpf,conta_nova.saldo,limite2,senha))
 						self.bd.executaALTERACOES(sql)
@@ -181,7 +181,7 @@ class Registros:
 						erros = 0
 		retorno.append(erros)
 		retorno.append(mensagem)
-		print(retorno)
+		#print(retorno)
 		return retorno
 
 
