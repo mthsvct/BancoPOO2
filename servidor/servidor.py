@@ -8,11 +8,15 @@ from registros import Registros
 from conexaoBD import ConexaoBD
 import pdb
 
+from multithread import ClientThread
+
 class Servidor():
     '''
     Classe que representa o servidor do banco
     '''
     def __init__(self):
+        self.run()
+        '''
         self.conexao = None
         self.serv = None
         self.banco = ConexaoBD()
@@ -20,11 +24,29 @@ class Servidor():
         self.iniciar()
         print('')
         self.menu()
+        '''
 
+
+    def run(self):
+        host = 'localhost'
+        port = 8000
+        addr = (host, port)
+        serv_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        serv_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR,1)
+        serv_socket.bind(addr)
+        print('servidor iniciado')
+        print('aguardando nova conexão...')
+        while True:
+            serv_socket.listen(1)
+            clientsock, clienteAddress = serv_socket.accept()
+            newthread = ClientThread(clienteAddress,clientsock)
+            newthread.start()
+
+
+
+    '''
     def iniciar(self):
-        '''
-            Metodo que inicia a conexao do servidor
-        '''
+        # Metodo que inicia a conexao do servidor
         host = 'localhost'
         port = 8000
         addr = (host, port)
@@ -36,164 +58,9 @@ class Servidor():
         con, client = serv_socket.accept()
         print(f'Conectado a {client}')
         self.conexao = con
-        self.serv = serv_socket
-
-    
-    def recebe_dados(self):
-        '''
-            Metodo para converter a string recebida em uma lista
-        '''
-        dados_recebidos = self.conexao.recv(1024).decode()
-        dados = list(dados_recebidos.split(';'))
-        #print(f'Recebido: {dados} : {type(dados)}')
-        return dados
-    
-
-    def enviar_dados(self,dados):
-        '''
-            Metodo para enviar uma string ao cliente
-        '''
-        #print(f"dados = {dados}")
-        self.conexao.send(str(dados).encode())
-        #print("Enviado!")
-        
-
-    def menu(self):
+        self.serv = serv_socket'''
 
 
-
-        '''
-            Indice do Menu:
-            [OK] - 1 - login
-            [OK] - 2 - Cadastrar cliente
-            [OK] - 3 - Cadastrar conta
-            [OK] - 4 - Extrato
-            [OK] - 5 - Histórico
-            [OK] - 6 - Saque
-            [OK] - 7 - Depósito
-            [OK] - 8 - Transferência <- Fazer depois.
-            [OK] - 0 - Fazer o sevridor parar <- fazer depois.
-        '''
-
-        # print("chegou aqui!")
-        
-        i = 0
-        while True:
-            
-            d = self.recebe_dados()
-
-            if d[0]=='1':
-                self.login(d)
-
-            elif d[0]=='2':
-                self.cadastrar_cliente(d)
-
-            elif d[0]=='3':
-                self.cadastrar_conta(d)
-
-            elif d[0]=='4':
-                self.extrato(d)
-
-            elif d[0]=='5':
-                self.historico(d)
-
-            elif d[0]=='6':
-                self.saque(d[1], d[2])
-
-            elif d[0] == '7':
-                self.deposito(d[1], d[2])
-
-            elif d[0] == '8':
-                self.transferencia(d[1], d[2], d[3]) # cpf1, cpf2, valor.
-
-            else:
-                print('cliente encerrado')
-                self.conexao = None
-                print('aguardando conexao...')
-                con, client = self.serv.accept()
-                print(f'Conectado a {client}')
-                self.conexao = con
-                #break
-
-
-    # Funções seguintes
-
-    # Função que chama as funções de LOGIN
-    def login(self, dados):
-        retorno = self.registros.fazerLOGIN(dados[1], dados[2])
-        if retorno[0] == None:
-            resultado = (f'{0};{retorno[1]}')
-        else:
-            resultado = (f'{1};{retorno[0].numero};{retorno[0].titular.cpf};{retorno[0].titular.nome};{retorno[0].titular.sobrenome}')
-        #print(f'Mensagem = {retorno[0]}')
-        self.enviar_dados(resultado)
-
-
-    def cadastrar_cliente(self, dados):
-        retorno = self.registros.cadastrarCLIENTE(dados[1], dados[2], dados[3], dados[4], dados[5])
-        if retorno[0] == None:
-            resultado = (f'{0};{retorno[1]}')
-        else:
-            resultado = (f'{1};{retorno[1]}')
-        self. enviar_dados(resultado)
-
-    
-    def cadastrar_conta(self, dados):
-        # def cadastrarCONTA(self,numero,cpf,limite,senha,confirmSENHA)
-        #print(dados)
-        retorno = self.registros.cadastrarCONTA(dados[1], dados[2], dados[3], dados[4], dados[5])
-        #print(f"retorno.cadastrar_conta = {retorno}")
-        if retorno[0] == 1:
-            resultado = (f'{0};{retorno[1]}')
-        else:
-            resultado = (f'{1};{retorno[1]}')
-        self.enviar_dados(resultado)
-
-
-    def extrato(self, dados):
-        c = self.registros.buscaCONTA(dados[1])
-        if c == None:
-            resultado = (f'{0};A conta buscada não foi encontrada!')
-        else:
-            resultado = (f'{1};{c.saldo};{c.limite}')
-        self.enviar_dados(resultado)
-
-
-    def historico(self, dados):
-        esse = self.registros.buscaCONTA(dados[1])
-        if esse == None:
-            resultado = (f'{0};A conta buscada não foi encontrada!')
-        else:
-            mensagem = self.registros.pegaHISTORICO(esse)
-            h = ''
-            for i in range(0, len(mensagem)):
-                h = h + (f"{mensagem[i][1]} - {mensagem[i][2]} \n\n")
-            resultado = (f'{1};{h}')
-        self.enviar_dados(resultado)
-
-
-    def saque(self, cpf, valor):
-        if '' in [cpf, valor]:
-            resultado = (f'{0};Não foi possível realizar o saque!')
-        else:
-            s = self.registros.EfetuarSAQUE(cpf, valor)
-            resultado = (f'{1};{s}')
-        self.enviar_dados(resultado)
-
-
-    def deposito(self, cpf, valor):
-        if '' in [cpf, valor]:
-            resultado = (f'{0};Não foi possível realizar o deposito!')
-        else:
-            d = self.registros.EfetuarDEPOSITAR(cpf, valor)
-            resultado = (f'{1};{d}')
-        self.enviar_dados(resultado)
-
-
-    def transferencia(self, cpf1, cpf2, valor):
-        if '' in [cpf1, cpf2, valor]:
-            resultado = (f'{0};Nao foi possivel realizar a transferencia!')
-        else:
-            t = self.registros.EfetuarTRANSFERENCIA(cpf1, cpf2, valor)
-            resultado = (f'{1};{t}')
-        self.enviar_dados(resultado)
+if __name__ == '__main__':
+    servidor = Servidor()
+    sys.exit()
